@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page - iAsset.Com Application</title>
+    <link href="/Content/bootstrap.css" rel="stylesheet" />
+    <link href="/Content/site.css" rel="stylesheet" />
+    <link href="/Content/angular-material.css" rel="stylesheet" />
+
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+
+    <script src="/Scripts/jquery-1.10.2.js"></script>
+     <script src="/Scripts/angular/angular.min.js"></script>
+    <script src="/Scripts/angular-aria/angular-aria.js"></script>
+    <script src="/Scripts/angular-animate/angular-animate.js"></script>
+
+    <!--<script src="/Scripts/angular/angular-route.js"></script>-->
+    <script src="/Scripts/angular-material/angular-material.min.js"></script>
+
+    <script src="/app/js/services.js"></script>
+    <script src="/app/js/controllers.js"></script>
+    <script src="/app/js/app.js"></script>
+</head>
+
+<body ng-app="iAsset" ng-controller="weatherController">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">iAsset</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/Home/About">About</a></li>
+                    <li><a href="/Home/Contact">Contact</a></li>
+                    <li><a href="/Weather">Weather</a></li>
+                    <li><a href="/app/Weather/weather.html">Weather using AngularJS</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/Account/Register" id="registerLink">Register</a></li>
+                    <li><a href="/Account/Login" id="loginLink">Log in</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+
+        <p><h3>City Weather through Angular</h3></p>
+        <div layout="column" layout-align="">
+                <md-card>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">City Weather</span>
+                            <span class="md-subhead">Select Country and City to get weather report.</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <div layout="row">
+                            <md-input-container>
+                                <label>Country</label>
+                                <md-select placeholder="Select Country" ng-model="selectedCountry" md-on-open="getCountries()" ng-change="getCities()" style="min-width: 200px;">
+                                        <md-option><em>None</em></md-option>
+                                        <md-option ng-repeat="country in Countries" ng-value="country.CountryName">
+                                            {{country.CountryName}}
+                                        </md-option>
+                                    </md-select>
+                            </md-input-container>
+                            <md-input-container>
+                                <label>City</label>
+                                <md-select placeholder="Select City" ng-model="selectedCity" style="min-width: 200px;">
+                                    <md-option ng-repeat="city in Cities" ng-value="city.City">
+                                        {{city.City}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container>
+                                <md-button class="md-raised md-primary" ng-click="getWeather()">Get City Weather</md-button>
+                            </md-input-container>
+                            </div>
+                        <div layout ="row">
+                            <table id="weather" class="table">
+                                <tr>
+                                    <th>Hour</th>
+                                    <th>Location</th>
+                                    <th>Time</th>
+                                    <th>Wind</th>
+                                    <th>Visibility</th>
+                                    <th>SkyCondition</th>
+                                    <th>Temperature</th>
+                                    <th>DewPoint</th>
+                                    <th>RelativeHumidity</th>
+                                    <th>Pressure</th>
+                                </tr>
+                             </table>
+
+                            </div>
+                        <div layout="row" >
+                            <table class="table">
+                            <tr ng-repeat="weather in hourlyWeather">
+                                <td>{{weather.Hour}}</td>
+                                <td>{{weather.Location}}</td>
+                                <td>{{weather.Time}}</td>
+                                <td>{{weather.Wind}}</td>
+                                <td>{{weather.Visibility}}</td>
+                                <td>{{weather.SkyCondition}}</td>
+                                <td>{{weather.Temperature}}</td>
+                                <td>{{weather.DewPoint}}</td>
+                                <td>{{weather.RelativeHumidity}}</td>
+                                <td>{{weather.Pressure}}</td>
+                            </tr>
+                            </table>
+                        </div>
+                       
+                    </md-card-content>
+                </md-card>
+
+        </div>
+
+        <hr />
+        <footer>
+            <p>&copy; 2017 - iAsset.Com Application</p>
+        </footer>
+    </div>
+
+
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/respond.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Weather";
+}
+
+
+
+<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.Message</h3>
+
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            <label for="country">Country:</label>
+            @Html.DropDownList("Country", new SelectList(ViewBag.CountryList, "CountryName", "CountryName"), new { onchange = "GetCities()", @class = "dropdown" })
+        </div>
+        <div class="form-group">
+            <label for="city">City:   </label>
+
+            @Html.DropDownList("City", new SelectList(ViewBag.CityList, "City", "City"), new { @class = "dropdown" })
+        </div>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="GetWeather();">Check Weather</button>
+
+        </div>
+        <table id="weather" class="table">
+            <tr>
+                <th>Hour</th>
+                <th>Location</th>
+                <th>Time</th>
+                <th>Wind</th>
+                <th>Visibility</th>
+                <th>SkyCondition</th>
+                <th>Temperature</th>
+                <th>DewPoint</th>
+                <th>RelativeHumidity</th>
+                <th>Pressure</th>
+
+            </tr>
+        </table>
+
+    </div>
+
+
+}
+
+<script>
+    function GetCities() {
+        var selectedCountry = $("#Country").val();
+
+        if (selectedCountry == "") return;
+        //alert(selectedCountry);
+        $.ajax({
+            url: '@Url.Action("GetCities","Weather")?country='+ selectedCountry
+        }).done (function(result) {
+            $("#City").html("");
+
+            $.each(result, function (i, city) {
+                $("#City").append($('<option></option>').val(city.City).html(city.City))
+            })
+        }
+        ).fail(function (error) {
+            console.log(error);
+        });
+    }
+
+
+    function GetWeather() {
+        var selectedCountry = $("#Country").val();
+        var selectedCity = $("#City").val();
+        $.ajax({
+            url: '@Url.Action("GetWeather","Weather")',
+            data: { 'city': selectedCity, 'country': selectedCountry }
+        }).done(function (data) {
+
+                if (data) {
+                    var len = data.length;
+                    var txt = "";
+                    if (len > 0) {
+                        for (var i = 0; i < len; i++) {
+
+                            txt += "<tr><td>" + data[i].Hour + "</td><td>" + data[i].Location + "</td>" + "<td>" + data[i].Time + "</td>" + "<td>" + data[i].Wind + "</td>"
+                                    + "<td>" + data[i].Visibility + "</td>" + "<td>" + data[i].SkyCondition + "</td>" + "<td>" + data[i].Temperature + "</td>"
+                                    + "<td>" + data[i].DewPoint + "</td>" + "<td>" + data[i].RelativeHumidity + "</td>" + "<td>" + data[i].Pressure + "</tr>";
+
+
+                        }
+                        if (txt != "") {
+                            $("#weather").append(txt).removeClass("hidden");
+                        }
+                    }
+                }
+
+
+
+        }
+       ).fail(function (error) {
+           console.log(error);
+       });
+
+    }
+</script>
